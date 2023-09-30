@@ -1,0 +1,6 @@
+[submodule "bypassd_kernel"]
+	path = kernel
+	url = https://github.com/SujayYadalam94/bypassd_kernel.git
+[submodule "userLib"]
+	path = userLib
+	url = https://github.com/SujayYadalam94/userLib.git
