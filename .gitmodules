@@ -4,3 +4,6 @@
 [submodule "userLib"]
 	path = userLib
 	url = https://github.com/SujayYadalam94/userLib.git
+[submodule "workloads/fio"]
+	path = workloads/fio
+	url = https://github.com/axboe/fio.git
