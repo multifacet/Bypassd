@@ -1,0 +1,14 @@
+; Aggregate write throughput measurement for BypassD
+; Multiple processes
+
+[random-writers]
+directory=/mnt/nvme
+ioengine=psync
+iodepth=1
+rw=write
+size=1G
+bs=4K
+direct=1
+numjobs=1
+time_based
+runtime=10
