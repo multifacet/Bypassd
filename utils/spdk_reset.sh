@@ -14,5 +14,7 @@ MOUNT_POINT=$2
 # Reset spdk config
 sudo bash $SCRIPT_DIR/../spdk/scripts/setup.sh reset
 
+sleep 1
+
 # Mount device back to mount point
 bash $SCRIPT_DIR/mount_dev.sh $DEV_NAME $MOUNT_POINT
