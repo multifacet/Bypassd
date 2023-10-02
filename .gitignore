@@ -55,3 +55,4 @@ dkms.conf
 
 # Results output files
 *.out
+*.pdf
