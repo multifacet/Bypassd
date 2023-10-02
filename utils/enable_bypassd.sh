@@ -16,6 +16,7 @@ fi
 # Check if the userLib is built
 if [ ! -f ${BYPASSD_DIR}/userLib/libshim.so ]; then
     pushd ${BYPASSD_DIR}/userLib
+    bash build_shim.sh
     make
     popd
 fi
