@@ -7,3 +7,6 @@
 [submodule "workloads/fio"]
 	path = workloads/fio
 	url = https://github.com/axboe/fio.git
+[submodule "spdk"]
+	path = spdk
+	url = https://github.com/spdk/spdk.git
