@@ -1,0 +1,17 @@
+; Background read processes
+
+[global]
+name=fio-bg-read
+filename=/mnt/nvme/fio-bg-read
+rw=randread
+bs=4K
+direct=1
+numjobs=1
+thread
+time_based
+runtime=20
+
+[file1]
+size=1G
+ioengine=psync
+iodepth=1
