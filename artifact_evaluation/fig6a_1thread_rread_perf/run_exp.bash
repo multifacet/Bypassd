@@ -6,12 +6,20 @@ BYPASSD_DIR=$SCRIPT_DIR/../../
 USERLIB_DIR=$BYPASSD_DIR/userLib
 FIO_DIR=$BYPASSD_DIR/workloads/fio
 
+# Ensure that device name and mount point are provided
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <device name> <mount point>"
+    exit 1
+fi
 
-# Need to check that kernel is installed, module is installed
-# Need to check that userLib is built and can be located
+DEV_NAME=$1
+MOUNT_POINT=$2
+
+# Mount the device (if not already mounted)
+bash $BYPASSD_DIR/utils/mount_dev.sh $DEV_NAME $MOUNT_POINT
 
 # Disable CPU frequency scaling
-${BYPASSD_DIR}/utils/cpu_freq_scaling.sh disable
+bash ${BYPASSD_DIR}/utils/cpu_freq_scaling.sh disable
 
 # Copy the workload config to tmp directory
 if [ -d /tmp/bypassd ]; then
@@ -20,6 +28,9 @@ fi
 mkdir /tmp/bypassd
 cp $SCRIPT_DIR/fio-rand-read.fio /tmp/bypassd
 WORKLOAD_FILE=/tmp/bypassd/fio-rand-read.fio
+
+# Update the filename in the workload file
+sed -i "s|filename=.*|filename=${MOUNT_POINT}/fio-rand-read|g" ${WORKLOAD_FILE}
 
 # Create results directory
 RESULTS_DIR=$SCRIPT_DIR/results
@@ -56,7 +67,8 @@ do
 done
 
 # Run bypassd evaluations
-bash ${BYPASSD_DIR}/utils/enable_bypassd.sh
+bash ${BYPASSD_DIR}/utils/enable_bypassd.sh $MOUNT_POINT
+bash ${BYPASSD_DIR}/utils/set_num_queues_userlib.sh 1
 
 sed -i 's/ioengine=.*/ioengine=psync/g' ${WORKLOAD_FILE}
 sed -i '/sqthread_poll/d' ${WORKLOAD_FILE}
@@ -70,8 +82,7 @@ bash ${BYPASSD_DIR}/utils/disable_bypassd.sh
 
 # Run SPDK evaluations
 # Need to bind device to UIO driver so that SPDK can use it
-sudo umount /mnt/nvme
-sudo ../../spdk/scripts/setup.sh config
+bash ${BYPASSD_DIR}/utils/spdk_setup.sh $DEV_NAME
 sed -i 's/ioengine=.*/ioengine=spdk/g' ${WORKLOAD_FILE}
 sed -i 's/filename=.*/filename=trtype=PCIe traddr=0000.18.00.0/g' ${WORKLOAD_FILE}
 for BLK_SIZE in 4 8 16 32 64 128
@@ -80,9 +91,7 @@ do
     sudo LD_PRELOAD=../../spdk/build/fio/spdk_nvme $FIO_DIR/fio ${FIO_OPTIONS} ${WORKLOAD_FILE} 2>&1 | tee $SCRIPT_DIR/results/spdk_${BLK_SIZE}KB.out
 done
 # Rebind device to kernel driver
-sudo ../../spdk/scripts/setup.sh reset
-sleep 1
-sudo mount -o defaults,noatime,nodiratime,nodelalloc /dev/nvme0n1 /mnt/nvme/
+bash ${BYPASSD_DIR}/utils/spdk_reset.sh $DEV_NAME $MOUNT_POINT
 
 # Plot the graph
 python3 ${SCRIPT_DIR}/plot.py $SCRIPT_DIR/results
@@ -91,4 +100,4 @@ python3 ${SCRIPT_DIR}/plot.py $SCRIPT_DIR/results
 rm -r /tmp/bypassd
 
 # Enable CPU frequency scaling
-${BYPASSD_DIR}/utils/cpu_freq_scaling.sh enable
+bash ${BYPASSD_DIR}/utils/cpu_freq_scaling.sh enable

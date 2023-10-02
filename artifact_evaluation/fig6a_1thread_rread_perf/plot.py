@@ -33,6 +33,11 @@ def extract_lat_bw(results_file):
 
     return (latency, bandwidth)
 
+# Check if the results directory is provided
+if len(sys.argv) != 2:
+    print("Usage: python plot.py <results_dir>")
+    sys.exit(0)
+
 # Matplotlib graph settings
 plt.rcParams['xtick.labelsize']=14
 plt.rcParams['ytick.labelsize']=14

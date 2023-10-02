@@ -9,7 +9,8 @@ ioengine=psync
 iodepth=1
 
 [bg-readers]
-filename=/mnt/nvme/fio-bg-read
+directory=/mnt/nvme
+filename=fio-bg-read
 size=1G
 numjobs=4
 thread
@@ -17,7 +18,8 @@ runtime=15
 stats=0
 
 [file1]
-filename=/mnt/nvme/fio-rand-read
+directory=/mnt/nvme
+filename=fio-rand-read
 size=1G
 numjobs=1
 thread

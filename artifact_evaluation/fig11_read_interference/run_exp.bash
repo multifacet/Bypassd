@@ -6,7 +6,17 @@ BYPASSD_DIR=$SCRIPT_DIR/../../
 USERLIB_DIR=$BYPASSD_DIR/userLib
 FIO_DIR=$BYPASSD_DIR/workloads/fio
 
-# Need to check that kernel is installed
+# Ensure that device name and mount point are provided
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <device name> <mount point>"
+    exit 1
+fi
+
+DEV_NAME=$1
+MOUNT_POINT=$2
+
+# Mount the device (if not already mounted)
+bash $BYPASSD_DIR/utils/mount_dev.sh $DEV_NAME $MOUNT_POINT
 
 # Disable CPU frequency scaling
 ${BYPASSD_DIR}/utils/cpu_freq_scaling.sh disable
@@ -18,6 +28,9 @@ fi
 mkdir /tmp/bypassd
 cp $SCRIPT_DIR/fio-rread.fio /tmp/bypassd
 WORKLOAD_FILE=/tmp/bypassd/fio-rread.fio
+
+# Update the filename in the workload file
+sed -i "s|directory=.*|directory=${MOUNT_POINT}|g" ${WORKLOAD_FILE}
 
 # Create results directory
 RESULTS_DIR=$SCRIPT_DIR/results
@@ -35,7 +48,7 @@ do
 done
 
 # Run bypassd evaluations
-bash ${BYPASSD_DIR}/utils/enable_bypassd.sh
+bash ${BYPASSD_DIR}/utils/enable_bypassd.sh $MOUNT_POINT
 bash ${BYPASSD_DIR}/utils/set_num_queues_userlib.sh 20
 
 for BG_PROCS in 1 2 4 8 12 16

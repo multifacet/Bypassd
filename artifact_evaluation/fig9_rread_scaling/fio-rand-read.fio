@@ -1,5 +1,5 @@
-; Random read latency measurement for BypassD
-; Single threaded
+; Random read scaling measurement for BypassD
+; Multi threaded
 
 [global]
 name=fio-rand-read

@@ -33,6 +33,11 @@ def extract_lat_bw(results_file):
 
     return (latency, bandwidth)
 
+# Check if the results directory is provided
+if len(sys.argv) != 2:
+    print("Usage: python plot.py <results_dir>")
+    sys.exit(0)
+
 # Matplotlib graph settings
 plt.rcParams['xtick.labelsize']=14
 plt.rcParams['ytick.labelsize']=14
@@ -59,7 +64,7 @@ plt.rcParams['ps.fonttype'] = 42
 # Extract the data from the files
 results_dir = sys.argv[1]
 
-# Read baseline latency
+# Baseline write latency
 sync_lat = []
 sync_bw = []
 for blk_size in ["4KB", "8KB", "16KB", "32KB", "64KB", "128KB"]:
@@ -68,7 +73,7 @@ for blk_size in ["4KB", "8KB", "16KB", "32KB", "64KB", "128KB"]:
     sync_lat.append(lat)
     sync_bw.append(bw)
 
-# Read libaio latency
+# libaio write latency
 libaio_lat = []
 libaio_bw = []
 for blk_size in ["4KB", "8KB", "16KB", "32KB", "64KB", "128KB"]:
@@ -77,7 +82,7 @@ for blk_size in ["4KB", "8KB", "16KB", "32KB", "64KB", "128KB"]:
     libaio_lat.append(lat)
     libaio_bw.append(bw)
 
-# Read io_uring latency
+# io_uring write latency
 iouring_lat = []
 iouring_bw = []
 for blk_size in ["4KB", "8KB", "16KB", "32KB", "64KB", "128KB"]:
@@ -86,7 +91,7 @@ for blk_size in ["4KB", "8KB", "16KB", "32KB", "64KB", "128KB"]:
     iouring_lat.append(lat)
     iouring_bw.append(bw)
 
-# Read spdk latency
+# spdk write latency
 spdk_lat = []
 spdk_bw = []
 for blk_size in ["4KB", "8KB", "16KB", "32KB", "64KB", "128KB"]:
@@ -95,7 +100,7 @@ for blk_size in ["4KB", "8KB", "16KB", "32KB", "64KB", "128KB"]:
     spdk_lat.append(lat)
     spdk_bw.append(bw)
 
-# Read bypassd latency
+# bypassd write latency
 bypassd_lat = []
 bypassd_bw = []
 for blk_size in ["4KB", "8KB", "16KB", "32KB", "64KB", "128KB"]:

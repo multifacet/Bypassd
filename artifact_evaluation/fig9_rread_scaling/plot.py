@@ -34,6 +34,11 @@ def extract_lat_iops(results_file):
 
     return (latency, iops)
 
+# Check if the results directory is provided
+if len(sys.argv) != 2:
+    print("Usage: python plot.py <results_dir>")
+    sys.exit(0)
+
 # Matplotlib graph settings
 plt.rcParams['xtick.labelsize']=14
 plt.rcParams['ytick.labelsize']=14
@@ -60,7 +65,7 @@ plt.rcParams['ps.fonttype'] = 42
 # Extract the data from the files
 results_dir = sys.argv[1]
 
-# Read baseline latency
+# Read baseline measurements
 sync_lat = []
 sync_iops = []
 for threads in ["1", "2", "4", "8", "12", "16", "20"]:
@@ -69,7 +74,7 @@ for threads in ["1", "2", "4", "8", "12", "16", "20"]:
     sync_lat.append(lat)
     sync_iops.append(bw)
 
-# Read libaio latency
+# Read libaio measurements
 libaio_lat = []
 libaio_iops = []
 for threads in ["1", "2", "4", "8", "12", "16", "20"]:
@@ -78,7 +83,7 @@ for threads in ["1", "2", "4", "8", "12", "16", "20"]:
     libaio_lat.append(lat)
     libaio_iops.append(bw)
 
-# Read io_uring latency
+# Read io_uring measurements
 iouring_lat = []
 iouring_iops = []
 for threads in ["1", "2", "4", "8", "12", "16", "20"]:
@@ -87,7 +92,7 @@ for threads in ["1", "2", "4", "8", "12", "16", "20"]:
     iouring_lat.append(lat)
     iouring_iops.append(bw)
 
-# Read spdk latency
+# Read spdk measurements
 spdk_lat = []
 spdk_iops = []
 for threads in ["1", "2", "4", "8", "12", "16", "20"]:
@@ -96,7 +101,7 @@ for threads in ["1", "2", "4", "8", "12", "16", "20"]:
     spdk_lat.append(lat)
     spdk_iops.append(bw)
 
-# Read bypassd latency
+# Read bypassd measurements
 bypassd_lat = []
 bypassd_iops = []
 for threads in ["1", "2", "4", "8", "12", "16", "20"]:
