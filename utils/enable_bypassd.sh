@@ -25,4 +25,4 @@ sudo bash -c "echo 1 > /proc/fs/ext4/nvme0n1/swiftcore_dram_pt"
 sudo bash -c "echo 4 > /proc/fs/swiftcore/swiftcore_filesize_limit"
 
 # Allocate hugepages for DMA buffers
-sudo bash -c "echo 32 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages"
+sudo bash -c "echo 128 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages"
