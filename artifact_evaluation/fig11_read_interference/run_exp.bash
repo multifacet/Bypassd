@@ -11,8 +11,13 @@ FIO_DIR=$BYPASSD_DIR/workloads/fio
 # Disable CPU frequency scaling
 ${BYPASSD_DIR}/utils/cpu_freq_scaling.sh disable
 
-BACKGROUND_FILE=fio-bg-read.fio
-WORKLOAD_FILE=fio-read.fio
+# Copy the workload config to tmp directory
+if [ -d /tmp/bypassd ]; then
+    rm -r /tmp/bypassd
+fi
+mkdir /tmp/bypassd
+cp $SCRIPT_DIR/fio-rread.fio /tmp/bypassd
+WORKLOAD_FILE=/tmp/bypassd/fio-rread.fio
 
 # Create results directory
 RESULTS_DIR=$SCRIPT_DIR/results
@@ -25,31 +30,26 @@ FIO_OPTIONS='--lat_percentiles=1 --clat_percentiles=0'
 # Run baseline linux evaluations
 for BG_PROCS in 1 2 4 8 12 16
 do
-    for i in $(seq 1 $BG_PROCS)
-    do
-        sudo $FIO_DIR/fio ${BACKGROUND_FILE} > /dev/null &
-    done
+    sed -i "0,/numjobs=/{s/numjobs=.*/numjobs=${BG_PROCS}/}" ${WORKLOAD_FILE}
     sudo $FIO_DIR/fio ${FIO_OPTIONS} ${WORKLOAD_FILE} 2>&1 | tee $SCRIPT_DIR/results/baseline_${BG_PROCS}.out
-    wait # Wait for background processes to finish
 done
 
 # Run bypassd evaluations
 bash ${BYPASSD_DIR}/utils/enable_bypassd.sh
-bash ${BYPASSD_DIR}/utils/set_num_queues_userlib.sh 1
+bash ${BYPASSD_DIR}/utils/set_num_queues_userlib.sh 20
 
 for BG_PROCS in 1 2 4 8 12 16
 do
-    for i in $(seq 1 $BG_PROCS)
-    do
-        sudo LD_PRELOAD=${USERLIB_DIR}/libshim.so $FIO_DIR/fio ${BACKGROUND_FILE} > /dev/null &
-    done
+    sed -i "0,/numjobs=/{s/numjobs=.*/numjobs=${BG_PROCS}/}" ${WORKLOAD_FILE}
     sudo LD_PRELOAD=${USERLIB_DIR}/libshim.so $FIO_DIR/fio ${FIO_OPTIONS} ${WORKLOAD_FILE} 2>&1 | tee $SCRIPT_DIR/results/bypassd_${BG_PROCS}.out
-    wait
 done
 bash ${BYPASSD_DIR}/utils/disable_bypassd.sh
 
 # Plot the graph
 python3 ${SCRIPT_DIR}/plot.py $SCRIPT_DIR/results
+
+# Delete tmp files
+rm -r /tmp/bypassd
 
 # Enable CPU frequency scaling
 ${BYPASSD_DIR}/utils/cpu_freq_scaling.sh enable

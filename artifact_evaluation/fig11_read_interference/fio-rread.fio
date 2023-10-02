@@ -1,0 +1,24 @@
+; Random read latency under interference
+
+[global]
+rw=randread
+bs=4K
+direct=1
+time_based
+ioengine=psync
+iodepth=1
+
+[bg-readers]
+filename=/mnt/nvme/fio-bg-read
+size=1G
+numjobs=4
+thread
+runtime=15
+stats=0
+
+[file1]
+filename=/mnt/nvme/fio-rand-read
+size=1G
+numjobs=1
+thread
+runtime=10
