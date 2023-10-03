@@ -10,7 +10,7 @@ LINUX_DIR=$BASE_DIR/kernel/linux-5.4
 sudo apt-get update
 sudo apt-get install build-dep libncurses-dev flex bison openssl libssl-dev dkms \
     libelf-dev libudev-dev libpci-dev libiberty-dev \
-    autoconf fakeroot bc cpio flex
+    autoconf fakeroot bc cpio flex libpci-dev
 
 # Build the kernel
 pushd $LINUX_DIR
@@ -19,6 +19,7 @@ pushd $LINUX_DIR
 echo "Configuring the kernel..."
 cp /boot/config-$(uname -r) .config
 echo | make localmodconfig
+sleep 1
 # Enable the following config options:
 # Refer to kernel/config_used_for_eval for more information
 sed -i 's/# CONFIG_NVME_CORE is not set/CONFIG_NVME_CORE=y/g' .config
