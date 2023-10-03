@@ -15,6 +15,18 @@ popd () {
     command popd "$@" > /dev/null
 }
 
+# Check if the CPU has pstate
+if [ -d intel_pstate ]; then
+    echo "Intel pstate detected. Please disable frequency scaling manually."
+    exit 1
+fi
+
+# Check if the CPU has cpufreq
+if [ ! -d cpu0/cpufreq ]; then
+    echo "CPU frequency scaling not supported."
+    exit 1
+fi
+
 pushd /sys/devices/system/cpu
 
 for i in $(seq 0 $(($NUM_CORES-1)))
