@@ -93,7 +93,7 @@ DEV_PCI_ADDR=$(echo $DEV_PCI_ADDR | sed 's/:/./g')
 bash ${BYPASSD_DIR}/utils/spdk_setup.sh $DEV_NAME
 sed -i 's/ioengine=.*/ioengine=spdk/g' ${WORKLOAD_FILE}
 sed -i "s/filename=.*/filename=trtype=PCIe traddr=${DEV_PCI_ADDR}/g" ${WORKLOAD_FILE}
-for BLK_SIZE in 4 8
+for BLK_SIZE in 4 8 16 32 64 128
 do
     sed -i 's/bs=.*K/bs='${BLK_SIZE}'K/g' ${WORKLOAD_FILE}
     sudo LD_PRELOAD=../../spdk/build/fio/spdk_nvme $FIO_DIR/fio ${FIO_OPTIONS} ${WORKLOAD_FILE} 2>&1 | tee $SCRIPT_DIR/results/spdk_${BLK_SIZE}KB.out
@@ -102,7 +102,6 @@ done
 bash ${BYPASSD_DIR}/utils/spdk_reset.sh $DEV_NAME $MOUNT_POINT
 
 # Plot the graph
-pip3 install matplotlib
 python3 ${SCRIPT_DIR}/plot.py $SCRIPT_DIR/results
 
 # Delete tmp files
