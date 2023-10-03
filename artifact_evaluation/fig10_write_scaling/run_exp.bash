@@ -90,4 +90,4 @@ python3 ${SCRIPT_DIR}/plot.py $SCRIPT_DIR/results
 rm -r /tmp/bypassd
 
 # Enable CPU frequency scaling
-${BYPASSD_DIR}/utils/cpu_freq_scaling.sh enable
+bash ${BYPASSD_DIR}/utils/cpu_freq_scaling.sh enable
