@@ -12,6 +12,13 @@ sudo apt-get install build-dep libncurses-dev flex bison openssl libssl-dev dkms
     libelf-dev libudev-dev libpci-dev libiberty-dev \
     autoconf fakeroot bc cpio flex libpci-dev python3-dev
 
+# Install other dependencies (matplotlib for plotting)
+# Check if matplotlib is installed
+if ! python3 -c "import matplotlib" &> /dev/null; then
+    echo "Matplotlib not installed. Installing now..."
+    pip3 install matplotlib
+fi
+
 # Build the kernel
 pushd $LINUX_DIR
 
