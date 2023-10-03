@@ -81,10 +81,16 @@ done
 bash ${BYPASSD_DIR}/utils/disable_bypassd.sh
 
 # Run SPDK evaluations
+# Need to figure out the device address for SPDK
+DEV_ID=$(basename $DEV_NAME)
+DEV_PCI_ADDR=$(cat /sys/block/$DEV_ID/device/address)
+# Replace ':' with '.' in the PCI address
+DEV_PCI_ADDR=$(echo $DEV_PCI_ADDR | sed 's/:/./g')
+
 # Need to bind device to UIO driver so that SPDK can use it
 sudo ${BYPASSD_DIR}/utils/spdk_setup.sh $DEV_NAME
 sed -i 's/ioengine=.*/ioengine=spdk/g' ${WORKLOAD_FILE}
-sed -i 's/filename=.*/filename=trtype=PCIe traddr=0000.18.00.0/g' ${WORKLOAD_FILE}
+sed -i "s/filename=.*/filename=trtype=PCIe traddr=${DEV_PCI_ADDR}/g" ${WORKLOAD_FILE}
 for THREADS in 1 2 4 8 12 16 20
 do
     sed -i 's/numjobs=.*/numjobs='${THREADS}'/g' ${WORKLOAD_FILE}
