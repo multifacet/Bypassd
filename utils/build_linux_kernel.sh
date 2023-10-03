@@ -10,7 +10,7 @@ LINUX_DIR=$BASE_DIR/kernel/linux-5.4
 sudo apt-get update
 sudo apt-get install build-dep libncurses-dev flex bison openssl libssl-dev dkms \
     libelf-dev libudev-dev libpci-dev libiberty-dev \
-    autoconf fakeroot bc cpio flex libpci-dev
+    autoconf fakeroot bc cpio flex libpci-dev python3-dev
 
 # Build the kernel
 pushd $LINUX_DIR

@@ -53,12 +53,6 @@ plt.rcParams['axes.spines.bottom'] = True
 plt.rcParams['axes.spines.left'] = True
 plt.rcParams['axes.spines.right'] = True
 
-font_path = '/usr/share/fonts/truetype/adf/GilliusADF-Regular.otf'  # Your font path goes here
-font_manager.fontManager.addfont(font_path)
-prop = font_manager.FontProperties(fname=font_path)
-
-plt.rcParams['font.family'] = 'sans-serif'
-plt.rcParams['font.sans-serif'] = prop.get_name()
 plt.rcParams['pdf.fonttype'] = 42
 plt.rcParams['ps.fonttype'] = 42
 

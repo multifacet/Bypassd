@@ -83,6 +83,7 @@ bash ${BYPASSD_DIR}/utils/disable_bypassd.sh
 # SPDK cannot share device between multiple processes
 
 # Plot the graph
+pip3 install matplotlib
 python3 ${SCRIPT_DIR}/plot.py $SCRIPT_DIR/results
 
 # Delete tmp files
