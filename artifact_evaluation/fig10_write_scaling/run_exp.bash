@@ -38,6 +38,9 @@ if [ ! -d ${RESULTS_DIR} ]; then
     mkdir $SCRIPT_DIR/results
 fi
 
+# Enable bypassd
+bash ${BYPASSD_DIR}/utils/enable_bypassd.sh $MOUNT_POINT
+
 FIO_OPTIONS='--lat_percentiles=1 --clat_percentiles=0'
 
 # Run baseline linux evaluations
@@ -67,7 +70,6 @@ do
 done
 
 # Run bypassd evaluations
-bash ${BYPASSD_DIR}/utils/enable_bypassd.sh $MOUNT_POINT
 bash ${BYPASSD_DIR}/utils/set_num_queues_userlib.sh 8
 
 sed -i 's/ioengine=.*/ioengine=psync/g' ${WORKLOAD_FILE}
