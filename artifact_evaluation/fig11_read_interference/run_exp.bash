@@ -61,7 +61,6 @@ done
 bash ${BYPASSD_DIR}/utils/disable_bypassd.sh
 
 # Plot the graph
-pip3 install matplotlib
 python3 ${SCRIPT_DIR}/plot.py $SCRIPT_DIR/results
 
 # Delete tmp files

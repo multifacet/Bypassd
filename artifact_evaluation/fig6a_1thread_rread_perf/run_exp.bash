@@ -102,7 +102,6 @@ done
 bash ${BYPASSD_DIR}/utils/spdk_reset.sh $DEV_NAME $MOUNT_POINT
 
 # Plot the graph
-pip3 install matplotlib
 python3 ${SCRIPT_DIR}/plot.py $SCRIPT_DIR/results
 
 # Delete tmp files
