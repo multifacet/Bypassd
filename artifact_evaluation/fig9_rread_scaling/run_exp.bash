@@ -96,7 +96,7 @@ sed -i "s/filename=.*/filename=trtype=PCIe traddr=${DEV_PCI_ADDR}/g" ${WORKLOAD_
 for THREADS in 1 2 4 8 12 16 20
 do
     sed -i 's/numjobs=.*/numjobs='${THREADS}'/g' ${WORKLOAD_FILE}
-    sudo LD_PRELOAD=../../spdk/build/fio/spdk_nvme $FIO_DIR/fio ${FIO_OPTIONS} ${WORKLOAD_FILE} 2>&1 | tee $SCRIPT_DIR/results/spdk_${THREADS}.out
+    sudo LD_PRELOAD=${BYPASSD_DIR}/spdk/build/fio/spdk_nvme $FIO_DIR/fio ${FIO_OPTIONS} ${WORKLOAD_FILE} 2>&1 | tee $SCRIPT_DIR/results/spdk_${THREADS}.out
 done
 # Rebind device to kernel driver
 bash ${BYPASSD_DIR}/utils/spdk_reset.sh $DEV_NAME $MOUNT_POINT

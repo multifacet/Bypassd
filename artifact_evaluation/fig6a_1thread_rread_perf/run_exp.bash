@@ -96,7 +96,7 @@ sed -i "s/filename=.*/filename=trtype=PCIe traddr=${DEV_PCI_ADDR}/g" ${WORKLOAD_
 for BLK_SIZE in 4 8 16 32 64 128
 do
     sed -i 's/bs=.*K/bs='${BLK_SIZE}'K/g' ${WORKLOAD_FILE}
-    sudo LD_PRELOAD=../../spdk/build/fio/spdk_nvme $FIO_DIR/fio ${FIO_OPTIONS} ${WORKLOAD_FILE} 2>&1 | tee $SCRIPT_DIR/results/spdk_${BLK_SIZE}KB.out
+    sudo LD_PRELOAD=${BYPASSD_DIR}/spdk/build/fio/spdk_nvme $FIO_DIR/fio ${FIO_OPTIONS} ${WORKLOAD_FILE} 2>&1 | tee $SCRIPT_DIR/results/spdk_${BLK_SIZE}KB.out
 done
 # Rebind device to kernel driver
 bash ${BYPASSD_DIR}/utils/spdk_reset.sh $DEV_NAME $MOUNT_POINT
