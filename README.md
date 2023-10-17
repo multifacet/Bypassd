@@ -61,7 +61,9 @@ Here is a list of graphs that can be generated using the scripts in this repo:
 Generating these figures is straightforward. The <code>artifact_evaluation/</code> contains scripts to generate each of this figure. All you have to do is run the script.
 For example,
 ```bash
-bash artifact_evaluation/fig6a_1thread_rread_perf/run_exp.sh
+pushd artificat_evaluation/fig6a_1thread_rread_perf
+bash run_exp.sh /dev/nvme0n1 /nvme-mntpoint
+popd
 ```
 The script will generate a plot using <code>matplotlib</code> which will be saved as a pdf in the respctive subdirectory. You can also look at the <code>results/</code> sub-directory to get more results from the experiments.
 
