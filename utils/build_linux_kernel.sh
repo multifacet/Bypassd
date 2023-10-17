@@ -31,6 +31,8 @@ sleep 1
 # Refer to kernel/config_used_for_eval for more information
 sed -i 's/# CONFIG_NVME_CORE is not set/CONFIG_NVME_CORE=y/g' .config
 sed -i 's/# CONFIG_BLK_DEV_NVME is not set/CONFIG_BLK_DEV_NVME=y/g' .config
+sed -i 's/# CONFIG_AIO is not set/CONFIG_AIO=y/g' .config
+sed -i 's/# CONFIG_IO_URING is not set/CONFIG_IO_URING=y/g' .config
 sed -i 's/# CONFIG_UIO is not set/CONFIG_UIO=y/g' .config
 sed -i 's/# CONFIG_UIO_PCI_GENERIC is not set/CONFIG_UIO_PCI_GENERIC=y/g' .config
 sed -i 's/# CONFIG_EXT4_FS is not set/CONFIG_EXT4_FS=y/g' .config
