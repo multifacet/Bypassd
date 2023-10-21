@@ -4,11 +4,12 @@ SCRIPT_PATH=$(realpath $0)
 BYPASSD_DIR=$(dirname ${SCRIPT_PATH})/../
 
 # Check that mount point is passed to this script
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <mount point>"
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <device_name> <mount point>"
     exit 1
 fi
-MOUNT_POINT=$1
+DEV_NAME=$1
+MOUNT_POINT=$2
 
 # Check if the Bypassd module is installed
 if lsmod | grep -wq 'bypassd'; then
@@ -32,7 +33,10 @@ make clean; make
 popd
 
 # Enable bypassd parameters
-sudo bash -c "echo 1 > /proc/fs/ext4/nvme0n1/swiftcore_dram_pt"
+# Extract just the 'nvme' part from device name
+# TODO: need to check if these files exist
+DEV_ID=$(basename $DEV_NAME)
+sudo bash -c "echo 1 > /proc/fs/ext4/${DEV_ID}/swiftcore_dram_pt"
 sudo bash -c "echo 4 > /proc/fs/swiftcore/swiftcore_filesize_limit"
 
 # Allocate hugepages for DMA buffers

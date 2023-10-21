@@ -39,7 +39,7 @@ if [ ! -d ${RESULTS_DIR} ]; then
 fi
 
 # Enable bypassd
-bash ${BYPASSD_DIR}/utils/enable_bypassd.sh $MOUNT_POINT
+bash ${BYPASSD_DIR}/utils/enable_bypassd.sh $DEV_NAME $MOUNT_POINT
 
 FIO_OPTIONS='--lat_percentiles=1 --clat_percentiles=0'
 
