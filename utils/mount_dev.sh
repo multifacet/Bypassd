@@ -17,7 +17,7 @@ if [ -z "$MOUNT_POINT" ]; then
 fi
 
 if [ ! -d "$MOUNT_POINT" ]; then
-    mkdir -p $MOUNT_POINT
+    sudo mkdir -p $MOUNT_POINT
 fi
 
 # Remove / at the end mount point if it exists
