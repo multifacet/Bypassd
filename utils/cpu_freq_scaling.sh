@@ -27,10 +27,12 @@ do
     MIN_FREQ=$(cat cpuinfo_min_freq)
 
     if [ $1 == "enable" ]; then
-        sudo bash -c "echo ${MIN_FREQ} > scaling_max_freq"
+        sudo bash -c "echo ${MAX_FREQ} > scaling_max_freq"
+        sudo bash -c "echo ${MIN_FREQ} > scaling_min_freq"
         sudo bash -c "echo 'ondemand' > scaling_governor"
     else
         sudo bash -c "echo ${MAX_FREQ} > scaling_max_freq"
+        sudo bash -c "echo ${MAX_FREQ} > scaling_min_freq"
         sudo bash -c "echo 'performance' > scaling_governor"
     fi
 
