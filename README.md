@@ -1,6 +1,8 @@
 # Bypassd: Enabling fast userspace access to shared SSDs
 Bypassd is a novel I/O architecture that provides low latency access to shared SSDs.
-This repository contains the source code and instructions to reproduce some of the key results in the BypassD paper (to appear in ASPLOS'24).
+This repository contains the source code and instructions to reproduce some of the key results in the BypassD paper at ASPLOS'24.
+
+[BypassD: Enabling fast userspace access to shared SSDs](https://dl.acm.org/doi/10.1145/3617232.3624854)
 
 ## Overview
 BypassD has 3 main components:
